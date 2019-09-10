@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
+		http://www.springframework.org/schema/context 
+		http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<!-- 扫描路径,不扫描Controller -->
+	<context:component-scan base-package="net.huawei.wisdomstudy">
+		<context:exclude-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+	<!-- 导入数据库的相关配置 -->
+	<import resource="classpath:spring-hibernate.xml" />
+	<!-- 导入缓存的相关配置 -->
+	<import resource="classpath:spring-cache.xml" />
+	
+	<!-- springmvc 如何读写properties文件  [begin]-->
+<!-- 	<bean id="propertyPlaceHolderConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="locations">
+            <list>
+                把需要配置的properties文件配置在这里，可以有多个
+                <value>classpath:config.properties</value>
+            </list>
+        </property>
+	</bean>
+	加载配置文件
+	<context:property-placeholder location="classpath:config.properties"
+		file-encoding="utf-8" ignore-unresolvable="true" /><bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean"> <property name="locations"> <list> <value>classpath*:config/autoCreateTable.properties</value> </list> </property> </bean> <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer"> <property name="properties" ref="configProperties" /> </bean>
+ -->	
+ 	<bean id="configProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+		<property name="locations"> 
+			<list>
+				<value>classpath:config.properties</value>
+			</list>
+		</property>
+	</bean>
+	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PreferencesPlaceholderConfigurer">
+		<property name="properties" ref="configProperties" />
+	</bean>
+
+	<!-- springmvc 如何读写properties文件  [end]-->
+	
+</beans>

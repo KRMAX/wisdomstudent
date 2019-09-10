@@ -1,0 +1,50 @@
+/*-------------------------------------------------------
+ All Rights Reserved, Copyright (C) 2019, cexo, Ltd.
+-------------------------------------------------------*/
+
+body { font:12px/1.2em Microsoft YaHei;}
+
+a,
+a:link { color:#000; text-decoration:none; outline:none;}
+a:hover,
+a:focus { text-decoration:none; color:#fff;}
+
+.pd3 { padding:3px;}
+.pd5 { padding:5px;}
+.pd10 { padding:10px;}
+
+label,
+button,
+input,
+select,
+textarea { font-size:12px; vertical-align: middle;}
+
+input,
+button,
+select,
+textarea { font:12px/1.2em Microsoft YaHei;}
+
+
+.tabs-tool { border-top:0;}
+.wu-text,
+.wu-textarea { padding:3px; border:1px #95b8e7 solid; width:260px;}
+.wu-text { height:14px; line-height:14px; }
+
+.cexo-header { height:55px; position:relative; z-index:0; overflow:hidden; border-bottom:1px #95b8e7 solid; background:url(bg_header.jpg) bottom repeat-x;}
+.cexo-header-left { position:absolute; z-index:1; left:15px; top:0;}
+.cexo-header-left h1 { font:20px/20px Verdana; color:#fff;}
+.cexo-header-right { position:absolute; z-index:1; right:5px; top:0; color:#fff; text-align:right;}
+.cexo-header-right p { line-height:0.7em;}
+.cexo-header-right a { color:#fff; margin:0 5px;}
+
+.cexo-sidebar { width:160px;}
+.cexo-side-tree .tree-node { padding:3px 0px; }
+.cexo-side-tree a { display:block;}
+.cexo-side-tree .tree-node-selected { padding:2px 0; border:1px #fade23 solid;}
+
+.wu-toolbar-button,
+.wu-toolbar-search { padding:3px 5px;}
+
+.cexo-footer { height:24px; padding:5px; text-align:center; overflow:hidden; background:#ff500f;color:#fff}
+
+

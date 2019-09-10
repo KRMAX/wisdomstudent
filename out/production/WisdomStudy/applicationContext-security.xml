@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<beans xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:security="http://www.springframework.org/schema/security"
+		
+		xsi:schemaLocation="http://www.springframework.org/schema/beans     
+   				 	http://www.springframework.org/schema/beans/spring-beans-4.2.xsd  
+    				http://www.springframework.org/schema/security
+					http://www.springframework.org/schema/security/spring-security-3.1.xsd"
+>
+
+
+<security:http pattern="/**/*.jpg" security="none"/>             
+<security:http pattern="/**/*.png" security="none"/>             
+<security:http pattern="/**/*.gif" security="none"/>
+<security:http pattern="/**/*.ico" security="none"/>             
+<security:http pattern="/**/*.css" security="none"/>
+<security:http pattern="/**/*.js" security="none"/>
+<security:http pattern="/**/*.swf" security="none"/>
+
+
+<!-- spring security 3.X新的资源放行配置方式，不受保护的资源 -->                   
+<security:http auto-config="false" use-expressions="true"
+		entry-point-ref="loginUrlAuthenticationEntryPoint">
+		<security:intercept-url pattern="/admin/**"
+			access="hasRole('ROLE_ADMIN')" />
+		<security:intercept-url pattern="/teacher/**"
+			access="hasRole('ROLE_TEACHER')" />
+		<security:intercept-url pattern="/student/**"
+			access="hasRole('ROLE_STUDENT')" />
+		<security:intercept-url pattern="/api2/**"
+			access="hasAnyRole('ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_STUDENT')" />
+		<security:custom-filter position="FORM_LOGIN_FILTER"
+			ref="securityFilter" />
+		<security:logout logout-url="/j_spring_security_logout"
+			logout-success-url="/home" delete-cookies="true" />
+		<security:session-management 
+			invalid-session-url="/user-login-page" 
+			session-authentication-error-url="/user-login-page"> 
+			<security:concurrency-control 
+				max-sessions="30" 
+				expired-url="/home" 
+				error-if-maximum-exceeded="false"/>
+		</security:session-management>
+	</security:http>
+
+	<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider
+			user-service-ref="userDetailsServiceImpl">
+			<security:password-encoder hash="sha">
+				<security:salt-source user-property="username" />
+			</security:password-encoder>
+		</security:authentication-provider>
+	</security:authentication-manager>
+	
+	<bean id="loginUrlAuthenticationEntryPoint"
+		class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<property name="loginFormUrl" value="/user-login-page" />
+	</bean>
+	
+	<bean id="securityFilter" class="net.huawei.wisdomstudy.security.filter.AuthenticationFilter">
+		<property name="filterProcessesUrl" value="/j_spring_security_check" />
+		<property name="authenticationManager" ref="authenticationManager" />
+
+		<property name="authenticationFailureHandler">
+			<bean
+				class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+				<property name="defaultFailureUrl" value="/user-login-page?result=failed" />
+			</bean>
+		</property>
+
+		<property name="authenticationSuccessHandler">
+			<bean class="net.huawei.wisdomstudy.security.handler.ExtrAuthenticationSuccessHandler">
+				<property name="defaultTargetUrl" value="/home" />
+			</bean>
+		</property>
+	</bean>
+   
+</beans>
+<!-- auto-config="true" 这是一个预留的属性，他可以自动配置login form,BSIC 认证和logout URL 和logout services,
+如果没有特殊表明，这个的默认值是false。我们推荐你避免使用这个属性，相反的，配置你需要的一些服务。 -->
